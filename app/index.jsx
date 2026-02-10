@@ -1,114 +1,49 @@
-import { StatusBar } from "expo-status-bar";
-import { useRef, useState } from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
-import ActionButton from "../components/ActionButton";
-import FokusButton from "../components/FokusButton";
-import { IconPause, IconPlay } from "../components/Icons";
-import Timer from "../components/Timer";
 
-const pomodoro = [
-  {
-    id: "focus",
-    initialValue: 25 * 60,
-    image: require("./img_focus.png"),
-    display: 'Foco'
-  },
-  {
-    id: "short",
-    initialValue: 5 * 60,
-    image: require("./img_short.png"),
-    display: 'Pausa Curta'
-  },
-  {
-    id: "long",
-    initialValue: 15 * 60,
-    image: require("./img_long.png"),
-    display: 'Pausa Longa'
-  }
-]
+import { router } from "expo-router";
+import { Image, StyleSheet, Text, View } from "react-native";
+import FokusButton from "../components/FokusButton";
+import Footer from "../components/Footer";
+
 
 export default function Index() {
 
-  const [timerType, setTimerType] = useState(pomodoro[0]);
-  const [timerRunning, setTimerRunning] = useState(false);
-  const [seconds, setSeconds] = useState(pomodoro[0].initialValue);
-
-  const timerRef = useRef(null)
-
-  const clearTimer = () => {
-
-    if (timerRef.current !== null) {
-      clearInterval(timerRef.current);
-      timerRef.current = null;
-      setTimerRunning(false);
-    }
-  }
-
-  const toggleTimerType = (newTimerType) => {
-    setTimerType(newTimerType);
-    setSeconds(newTimerType.initialValue);
-    clearTimer();
-  };
-
-  const toggleTimer = () => {
-    if (timerRef.current) {
-      clearTimer();
-      return
-    };
-    setTimerRunning(true);
-
-    const id = setInterval(() => {
-      setSeconds(oldSeconds => {
-        if (oldSeconds === 0) {
-          clearTimer();
-          return timerType.initialValue;
-        }
-        return oldSeconds - 1;
-      })
-
-    }, 1000);
-
-    timerRef.current = id;
-  };
-
-
   return (
-    <View style={styles.container}>
-      <StatusBar style="light" />
+    <View style={styles.container} >
       <Image
-        source={timerType.image}
-        style={styles.image}
-
+        source={require('../assets/imagesFokus/Fokus_logo.png')}
       />
-      <View style={styles.actions}>
-        <View style={styles.context}>
-          {pomodoro.map(p => (
-            <ActionButton
-              key={p.id}
-              active={p.id === timerType.id}
-              onPress={() => toggleTimerType(p)}
-              display={p.display}
-            />
-          ))}
+      <View
+        style={styles.content}
+      >
+        <View
+          style={styles.textContainer}
+        >
+          <Text
+            style={[styles.text, styles.textLight]}
+          >
+            Otimize sua{'\n'}
+            Produtividade,
+          </Text>
+          <Text
+            style={[styles.text, styles.textHeavy]}
+          >
+            mergulhe no que {'\n'}
+            importa
+          </Text>
         </View>
-        <Timer totalseconds={seconds} />
-        <FokusButton
-          title={timerRunning ? "Pausar" : "Começar"}
-          Icon={timerRunning ? <IconPause /> : <IconPlay />}
-          onPress={toggleTimer}
+        <Image
+          source={require('../assets/imagesFokus/img_home.png')}
+          style={styles.image}
+        />
+        <FokusButton 
+          title= "Quero iniciar!"
+          onPress={()=> router.replace('/pomodoro')}
         />
       </View>
-      <View style={styles.footer} >
-        <Text style={styles.footerText}>
-          Projeto fictício e sem fins comerciais.
-        </Text>
-        <Text style={styles.footerText}>
-          Desenvolvido por Alura.
-        </Text>
-      </View>
+      <Footer />
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -117,36 +52,33 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#021123",
     gap: 40,
+    paddingVertical: 40,
   },
-  image: {
-    width: 317,
-    height: 317,
+  content: {
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 16,
+    width: "90%",
   },
-  actions: {
-    paddingHorizontal: 24,
-    paddingVertical: 24,
-    backgroundColor: "#14448030",
-    width: "80%",
-    borderRadius: 16,
-    borderWidth: 2,
-    borderColor: "#144480",
-    gap: 32,
+  textContainer: {
+    width: "100%",
     justifyContent: "center",
     alignItems: "center",
   },
-  context: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
-    gap: 8,
-  },
-  footer: {
-    width: "80%",
-  },
-  footerText: {
+  text: {
+    width: "100%",
     textAlign: "center",
-    color: "#98A0A8",
-    fontWeight: 400,
-    fontSize: 14,
-  }
+    fontSize: 32,
+    color: "#FFFFFF",
+  },
+  textLight: {
+    fontWeight: "300",
+  },
+  textHeavy: {
+    fontWeight: "700",
+  },
+  image: {
+    width: "90%",
+    height: 350,
+  },
 });

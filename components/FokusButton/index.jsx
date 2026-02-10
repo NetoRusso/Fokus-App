@@ -1,11 +1,11 @@
 import { Pressable, StyleSheet, Text } from "react-native";
 
-const FokusButton = ({ onPress, title, Icon }) => {
+const FokusButton = ({ onPress, title, Icon, outLine=false }) => {
 
   return (
-    <Pressable style={styles.button} onPress={onPress}>
+    <Pressable style={[styles.button, outLine && styles.outLine]} onPress={onPress}>
       {Icon}
-      <Text style={styles.buttonText}>
+      <Text style={[styles.buttonText, outLine && styles.outLineText]}>
         {title}
       </Text>
     </Pressable>
@@ -31,5 +31,13 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: "center",
     color: "#021123",
+  },
+  outLineText: {
+    color: "#B872FF",
+  },
+  outLine: {
+    backgroundColor: "transparent",
+    borderWidth: 2,
+    borderColor: "#B872FF",
   }
 });
