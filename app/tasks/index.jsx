@@ -23,25 +23,24 @@ export default function Tasks() {
           Lista de Tarefas:
         </Text>
         <View style={styles.tasksList}>
-          {tasks.length > 0 ? (
-            <FlatList
-              data={tasks}
-              renderItem={({ item }) =>
-                <TaskItem
-                  tarefa={item.description}
-                  completed={item.completed}
-                  onPressDelete={() => deleteTask(item.id)}
-                  onToggleComplete={() => toggleTaskCompleted(item.id)}
-                  onPressEdit={() => router.navigate(`/edit-task/${item.id}`)}
-                />
-              }
-              keyExtractor={item => item.id}
-            />
-          ) : (
-            <Text style={styles.msg}>
-              Ainda não há tarefas na sua lista, que tal adicionar?
-            </Text>
-          )}
+          <FlatList
+            data={tasks}
+            renderItem={({ item }) =>
+              <TaskItem
+                tarefa={item.description}
+                completed={item.completed}
+                onPressDelete={() => deleteTask(item.id)}
+                onToggleComplete={() => toggleTaskCompleted(item.id)}
+                onPressEdit={() => router.navigate(`/edit-task/${item.id}`)}
+              />
+            }
+            keyExtractor={item => item.id}
+            ListEmptyComponent={<View>
+              <Text style={styles.msg}>
+                Ainda não há tarefas na sua lista, que tal adicionar?
+              </Text>
+            </View>}
+          />
         </View>
 
         <FokusButton
@@ -76,9 +75,9 @@ const styles = StyleSheet.create({
     height: "80%",
   },
   msg: {
-    color: "#fff",
-    fontSize: 24,
+    color: "#98a0a8",
+    fontSize: 20,
     textAlign: "center",
-    marginTop: 64
+    marginTop: 40
   }
 });
